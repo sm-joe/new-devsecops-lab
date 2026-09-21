@@ -24,3 +24,11 @@ rules:
     message: "Avoid insecure HTTP URLs in application code."
     severity: WARNING
     pattern-regex: 'http://[A-Za-z0-9._:/?=&%-]+'
+
+  - id: lab-insecure-randomness
+    languages:
+      - javascript
+      - typescript
+    message: "Do not use Math.random() for security-sensitive randomness. Use a cryptographically secure random generator such as crypto.randomBytes() or crypto.randomInt()."
+    severity: ERROR
+    pattern: Math.random(...)
