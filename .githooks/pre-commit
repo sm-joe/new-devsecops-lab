@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+echo "Running Gitleaks secret scan..."
+
+gitleaks protect --staged --redact
+
+status=$?
+
+if [ "$status" -ne 0 ]; then
+    echo ""
+    echo "ERROR: Gitleaks detected a potential secret."
+    echo "Commit blocked."
+    echo ""
+    exit "$status"
+fi
+
+echo "Gitleaks scan passed."
+exit 0

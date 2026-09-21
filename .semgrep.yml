@@ -1,0 +1,26 @@
+rules:
+  - id: lab-dangerous-eval
+    languages:
+      - javascript
+    message: "Avoid eval() because it can execute attacker-controlled JavaScript."
+    severity: ERROR
+    pattern: eval(...)
+
+  - id: lab-hardcoded-password
+    languages:
+      - javascript
+    message: "Do not hardcode passwords in application source code."
+    severity: ERROR
+    patterns:
+      - pattern: |
+          const $VAR = "$VALUE";
+      - metavariable-regex:
+          metavariable: $VAR
+          regex: (?i)(password|passwd|pwd)
+
+  - id: lab-insecure-http
+    languages:
+      - javascript
+    message: "Avoid insecure HTTP URLs in application code."
+    severity: WARNING
+    pattern-regex: 'http://[A-Za-z0-9._:/?=&%-]+'
