@@ -16,43 +16,41 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Run Gitleaks
         id: gitleaks
-        uses: gitleaks/gitleaks-action@v3
         continue-on-error: true
+        uses: gitleaks/gitleaks-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >-
-            git
-            --report-format json
-            --report-path gitleaks-report.json
-            --redact
 
-      - name: Verify Gitleaks report
-        if: always()
-        run: |
-          if [ ! -f gitleaks-report.json ]; then
-            echo "Gitleaks did not produce a report."
-            exit 1
-          fi
-
-          echo "Gitleaks report generated successfully."
-
-      - name: Install security gate dependencies
+      - name: Install security gate dependency
         run: |
           python -m pip install --upgrade pip
           pip install pyyaml
 
-      - name: Normalize Gitleaks findings
+      - name: Create security gate input
+        env:
+          GITLEAKS_EXIT_CODE: ${{ steps.gitleaks.outcome }}
         run: |
-          python security/gitleaks_to_findings.py \
-            gitleaks-report.json \
-            gitleaks-findings.json
+          if [ "$GITLEAKS_EXIT_CODE" = "failure" ]; then
+            cat > gitleaks-findings.json <<'EOF'
+          [
+            {
+              "id": "GITLEAKS-DETECTION",
+              "type": "secret",
+              "severity": "HIGH",
+              "exploitable": true,
+              "source": "gitleaks"
+            }
+          ]
+          EOF
+          else
+            echo "[]" > gitleaks-findings.json
+          fi
 
       - name: Run security gate
         run: |
