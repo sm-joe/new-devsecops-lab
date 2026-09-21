@@ -1,1 +1,1 @@
-# TruffleHog Secret Scanning
+Gitleaks pre-commit protection is enabled.
