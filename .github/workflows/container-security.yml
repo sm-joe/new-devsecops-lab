@@ -85,7 +85,7 @@ jobs:
         run: |
           cosign attest \
             --yes \
-            --type sbom/cyclone-dx \
+            --type custom \
             --predicate sbom.json \
             "${IMAGE_DIGEST}"
 
@@ -109,7 +109,7 @@ jobs:
           IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
         run: |
           cosign verify-attestation \
-            --type sbom/cyclone-dx \
+            --type custom \
           --certificate-identity-regexp ".*" \
           --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
           "${IMAGE_DIGEST}"
