@@ -2,12 +2,24 @@ name: Semgrep SAST
 
 on:
   pull_request:
+    paths:
+      - 'app/**'
+      - '.semgrep.yml'
+      - '.github/workflows/semgrep.yml'
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - '.semgrep.yml'
+      - '.github/workflows/semgrep.yml'
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   semgrep:

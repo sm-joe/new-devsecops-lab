@@ -2,12 +2,24 @@ name: SonarQube
 
 on:
   pull_request:
+    paths:
+      - 'app/**'
+      - 'sonar-project.properties'
+      - '.github/workflows/sonarqube.yml'
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - 'sonar-project.properties'
+      - '.github/workflows/sonarqube.yml'
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   sonarqube:

@@ -2,12 +2,24 @@ name: SCA
 
 on:
   pull_request:
+    paths:
+      - 'app/**'
+      - 'Dockerfile'
+      - '.github/workflows/sca.yml'
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
+      - 'Dockerfile'
+      - '.github/workflows/sca.yml'
 
 permissions:
   contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   dependency-scan:

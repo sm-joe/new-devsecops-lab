@@ -1,0 +1,9 @@
+# Security-sensitive CI/CD configuration
+.github/workflows/* @sm-joe
+
+# Security policy and scanning configuration
+security/* @sm-joe
+.semgrep.yml @sm-joe
+
+# Container supply-chain configuration
+Dockerfile @sm-joe
