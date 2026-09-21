@@ -1,0 +1,15 @@
+{
+  "name": "new-devsecops-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hands-on DevSecOps security lab based on the technical case study",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  },
+  "devDependencies": {}
+}
