@@ -79,6 +79,16 @@ jobs:
       - name: Install Cosign
         uses: sigstore/cosign-installer@v4.1.0
 
+      - name: Attest CycloneDX SBOM
+        env:
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+        run: |
+          cosign attest \
+            --yes \
+            --type sbom/cyclone-dx \
+            --predicate sbom.json \
+            "${IMAGE_DIGEST}"
+
       - name: Sign image with Cosign
         env:
           IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
@@ -93,3 +103,13 @@ jobs:
             --certificate-identity-regexp ".*" \
             --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
             "${IMAGE_DIGEST}"
+
+      - name: Verify CycloneDX SBOM attestation
+        env:
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+        run: |
+          cosign verify-attestation \
+            --type sbom/cyclone-dx \
+          --certificate-identity-regexp ".*" \
+          --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+          "${IMAGE_DIGEST}"
