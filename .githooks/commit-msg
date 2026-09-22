@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -e
+
+COMMIT_MSG_FILE="$1"
+COMMIT_MSG=$(head -n 1 "$COMMIT_MSG_FILE")
+
+if [[ ! "$COMMIT_MSG" =~ ^(feat|fix|docs|ci|chore|refactor|test|build|perf)(\([a-zA-Z0-9._/-]+\))?!?:[[:space:]].+ ]]; then
+    echo ""
+    echo "ERROR: Invalid commit message."
+    echo ""
+    echo "Use Conventional Commits, for example:"
+    echo "  feat: add container security scanning"
+    echo "  fix: correct CSRF validation"
+    echo "  docs: update security policy"
+    echo "  ci: optimize security workflows"
+    echo "  chore: update dependencies"
+    echo ""
+    exit 1
+fi
+
+echo "Commit message format passed."
