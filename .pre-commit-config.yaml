@@ -15,3 +15,11 @@ repos:
     rev: v8.18.4
     hooks:
       - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint
+        entry: npm --prefix app exec -- eslint
+        language: system
+        files: \.(js|cjs|mjs)$

@@ -100,3 +100,4 @@ if (require.main === module) {
 }
 
 module.exports = app;
+// pre-commit eslint test
