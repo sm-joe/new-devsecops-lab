@@ -23,3 +23,9 @@ repos:
         entry: npm --prefix app exec -- eslint
         language: system
         files: \.(js|cjs|mjs)$
+
+      - id: prettier
+        name: Prettier
+        entry: npm --prefix app exec -- prettier --check
+        language: system
+        files: \.(js|cjs|mjs|json)$
